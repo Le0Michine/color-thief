@@ -36,7 +36,7 @@ $(document).ready(function () {
     var image                    = $image[0];
     var start                    = Date.now();
     var color                    = colorThief.getColor(image);
-    var colorComplement          = [ 255 - color[0], 255 - color[1], 255 - color[2]];
+    var colorComplement          = colorThief.getComplementaryColor(...color);
     var elapsedTimeForGetColor   = Date.now() - start;
     var palette                  = colorThief.getPalette(image);
     var elapsedTimeForGetPalette = Date.now() - start + elapsedTimeForGetColor;

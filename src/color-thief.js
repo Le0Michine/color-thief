@@ -149,6 +149,61 @@ ColorThief.prototype.getColorFromUrl = function(imageUrl, callback, quality) {
     sourceImage.src = imageUrl
 };
 
+ColorThief.prototype.getComplementaryColor = function (r, g, b) {
+    const { h, s, l } = ColorThief.prototype.rgbToHsl(r, g, b);
+    const result = ColorThief.prototype.hslToRgb((h + 180) % 360, s, l);
+    return [ Math.round(result.r), Math.round(result.g), Math.round(result.b) ];
+}
+
+ColorThief.prototype.rgbToHsl = function (r, g, b) {
+    // const [ R, G, B ] = [ r / 255, g / 255, b / 255];
+    const C_max = Math.max(r, g, b);
+    const C_min = Math.min(r, g, b);
+    const delta = C_max - C_min;
+    const sum = C_max + C_min;
+    const lightness = sum / 2 / 255;
+    let saturation = 0;
+    let hue = 0;
+
+    if (delta) {
+        saturation = lightness < 0.5 ? (delta / sum) : (delta / 255 / (2 - sum / 255));
+        switch(C_max) {
+            case r:
+                hue = ((g - b) / delta) + (g < b ? 6 : 0);
+                break;
+            case g:
+                hue = ((b - r) / delta) + 2;
+                break;
+            case b:
+                hue = ((r - g) / delta) + 4;
+                break;
+        }
+        hue *= 60;
+    }
+    return { h: hue, s: saturation, l: lightness };
+}
+
+ColorThief.prototype.hslToRgb = function (h, s, l) {
+    if (s) {
+        const tmp1 = l < 0.5 ? l * (1 + s) : (l + s - l * s);
+        const tmp2 = 2 * l - tmp1;
+        const angle = h / 360;
+        let r = angle + 1 / 3 + ((angle + 1 / 3) > 1 ? -1 : 0);
+        let g = angle;
+        let b = angle - 1 / 3 + ((angle - 1 / 3) < 0 ? 1 : 0);
+
+        const calc = (c) => {
+            if (c * 6 < 1) return tmp2 + (tmp1 - tmp2) * 6 * c;
+            if (c * 2 < 1) return tmp1;
+            if (c * 3 < 2) return tmp2 + (tmp1 - tmp2) * (4 - c * 6);
+            return tmp2;
+        }
+        return { r: calc(r) * 255, g: calc(g) * 255, b: calc(b) * 255 };
+
+    } else {
+        return { r: l * 255, g: l * 255, b: l * 255 };
+    }
+}
 
 ColorThief.prototype.getImageData = function(imageUrl, callback) {
     xhr = new XMLHttpRequest();
