@@ -81,9 +81,10 @@
 
   <script id="color-thief-output-template" type="text/x-mustache">
     <div class="function get-color">
-      <h3 class="function-title">Dominant Color</h3>
+      <h3 class="function-title">Dominant Color / Complement Color</h3>
       <div class="swatches">
         <div class="swatch" style="background-color: rgb({{color.0}}, {{color.1}}, {{color.2}})"></div>
+        <div class="swatch" style="background-color: rgb({{colorComplement.0}}, {{colorComplement.1}}, {{colorComplement.2}})"></div>
       </div>
       <div class="function-code">
         <code>colorThief.getColor(image):{{elapsedTimeForGetColor}}ms</code>
