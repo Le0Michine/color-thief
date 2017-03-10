@@ -30,4 +30,15 @@ colorThief.getPalette(sourceImage, 8);
 ```js
 getPalette(sourceImage[, colorCount, quality])
 returns [ [num, num, num], [num, num, num], ... ]
+
+### Get complementry color
+
+```js
+var colorThief = new ColorThief();
+colorThief.getComplementaryColor(123, 56, 42);
+```
+
+```js
+getComplementaryColor(r, g, b)
+returns [ r, g, b ]
 ```
